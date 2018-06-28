@@ -13,3 +13,12 @@ func Unique(s []string) []string {
 	}
 	return u
 }
+
+// Map returns the result of applying f to each element of the slice
+func Map(s []string, f func(v string) string) []string {
+	vs := make([]string, len(s))
+	for i, v := range s {
+		vs[i] = f(v)
+	}
+	return vs
+}
