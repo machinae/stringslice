@@ -50,3 +50,12 @@ func Contains(s []string, val string) bool {
 	}
 	return false
 }
+
+// Copy creates a shallow copy of the slice
+func Copy(s []string) []string {
+	vs := make([]string, len(s))
+	for i, v := range s {
+		vs[i] = v
+	}
+	return vs
+}

@@ -71,3 +71,11 @@ func TestContains(t *testing.T) {
 	assert.True(Contains(s, "b"))
 	assert.False(Contains(s, "d"))
 }
+
+func TestCopy(t *testing.T) {
+	assert := assert.New(t)
+	s := []string{"a", "b", "c"}
+	vs := Copy(s)
+	s[2] = "d"
+	assert.EqualValues([]string{"a", "b", "c"}, vs)
+}
