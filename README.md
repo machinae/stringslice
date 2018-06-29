@@ -1,5 +1,6 @@
 # stringslice - Utilities for working with string slices
-[![Go Report Card](https://goreportcard.com/badge/github.com/machinae/stringslice](https://goreportcard.com/report/github.com/machinae/stringslice)
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/machinae/stringslice)](https://goreportcard.com/report/github.com/machinae/stringslice)
 
 stringslice provides some Go utility functions for working with string slices.
 
