@@ -22,3 +22,21 @@ func Map(s []string, f func(v string) string) []string {
 	}
 	return vs
 }
+
+// Filter returns a slice of values where f returns true
+func Filter(s []string, f func(v string) bool) []string {
+	vs := make([]string, 0)
+	for _, v := range s {
+		if f(v) {
+			vs = append(vs, v)
+		}
+	}
+	return vs
+}
+
+// Filters out empty strings
+func Compact(s []string) []string {
+	return Filter(s, func(v string) bool {
+		return len(v) > 0
+	})
+}

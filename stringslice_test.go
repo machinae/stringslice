@@ -23,6 +23,18 @@ var mapTests = []sliceTest{
 	{[]string{"A", "B", ""}, []string{"a", "B", ""}},
 }
 
+// Result of Filter with len(s) == 2
+var filterTests = []sliceTest{
+	{[]string{"aa", "bb"}, []string{"aa", "bb", "c"}},
+	{[]string{}, []string{"a", "b", "c"}},
+}
+
+var compactTests = []sliceTest{
+	{[]string{"aa", "bb"}, []string{"aa", "bb", "", ""}},
+	// {[]string{}, []string{"", "", ""}},
+	{[]string{}, nil},
+}
+
 func TestUnique(t *testing.T) {
 	assert := assert.New(t)
 	for _, ts := range uniqueTests {
@@ -34,5 +46,21 @@ func TestMap(t *testing.T) {
 	assert := assert.New(t)
 	for _, ts := range mapTests {
 		assert.EqualValues(ts.expected, Map(ts.input, strings.ToUpper))
+	}
+}
+
+func TestFilter(t *testing.T) {
+	assert := assert.New(t)
+	for _, ts := range filterTests {
+		assert.EqualValues(ts.expected, Filter(ts.input, func(v string) bool {
+			return len(v) == 2
+		}))
+	}
+}
+
+func TestCompact(t *testing.T) {
+	assert := assert.New(t)
+	for _, ts := range compactTests {
+		assert.EqualValues(ts.expected, Compact(ts.input))
 	}
 }
