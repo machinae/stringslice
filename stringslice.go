@@ -34,9 +34,19 @@ func Filter(s []string, f func(v string) bool) []string {
 	return vs
 }
 
-// Filters out empty strings
+// Compact filters out empty strings
 func Compact(s []string) []string {
 	return Filter(s, func(v string) bool {
 		return len(v) > 0
 	})
+}
+
+// Contains returns true if the given string is present in the slice
+func Contains(s []string, val string) bool {
+	for _, v := range s {
+		if v == val {
+			return true
+		}
+	}
+	return false
 }

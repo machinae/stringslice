@@ -31,7 +31,7 @@ var filterTests = []sliceTest{
 
 var compactTests = []sliceTest{
 	{[]string{"aa", "bb"}, []string{"aa", "bb", "", ""}},
-	// {[]string{}, []string{"", "", ""}},
+	{[]string{}, []string{"", "", ""}},
 	{[]string{}, nil},
 }
 
@@ -63,4 +63,11 @@ func TestCompact(t *testing.T) {
 	for _, ts := range compactTests {
 		assert.EqualValues(ts.expected, Compact(ts.input))
 	}
+}
+
+func TestContains(t *testing.T) {
+	assert := assert.New(t)
+	s := []string{"a", "b", "c"}
+	assert.True(Contains(s, "b"))
+	assert.False(Contains(s, "d"))
 }
