@@ -1,17 +1,71 @@
 // Package stringslice provides utilities for working with string slices
 package stringslice
 
-// Unique returns a new slice with duplicate values silently discarded
-func Unique(s []string) []string {
-	u := make([]string, 0)
+import "strings"
+
+// convert the slice to a set stored as a map
+func toSet(s []string) map[string]bool {
 	m := make(map[string]bool)
 	for _, v := range s {
 		if _, ok := m[v]; !ok {
 			m[v] = true
-			u = append(u, v)
 		}
 	}
-	return u
+	return m
+}
+
+// convert the slice to a set indexed by lower case value
+func toSetFold(s []string) map[string]bool {
+	m := make(map[string]bool)
+	for _, v := range s {
+		k := strings.ToLower(v)
+		if _, ok := m[k]; !ok {
+			m[k] = true
+		}
+	}
+	return m
+}
+
+// Returns values present in both sets
+func setInter(s, s2 map[string]bool) map[string]bool {
+	m := make(map[string]bool)
+	for k := range s {
+		if _, ok := s2[k]; ok {
+			m[k] = true
+		}
+	}
+	return m
+}
+
+// Returns values present in only one of the sets
+func setDiff(s, s2 map[string]bool) map[string]bool {
+	m := make(map[string]bool)
+	for k := range s {
+		if _, ok := s2[k]; !ok {
+			m[k] = true
+		}
+	}
+	for k := range s2 {
+		if _, ok := s[k]; !ok {
+			m[k] = true
+		}
+	}
+	return m
+}
+
+// Returns string values in set
+// Order of returned values is random
+func fromSet(sm map[string]bool) []string {
+	var vs []string
+	for k := range sm {
+		vs = append(vs, k)
+	}
+	return vs
+}
+
+// Unique returns a new slice with duplicate values silently discarded
+func Unique(s []string) []string {
+	return fromSet(toSet(s))
 }
 
 // Map returns the result of applying f to each element of the slice
@@ -51,6 +105,16 @@ func Contains(s []string, val string) bool {
 	return false
 }
 
+// ContainsFold is like Contains, but case-insensitive
+func ContainsFold(s []string, val string) bool {
+	for _, v := range s {
+		if strings.EqualFold(v, val) {
+			return true
+		}
+	}
+	return false
+}
+
 // Copy creates a shallow copy of the slice
 func Copy(s []string) []string {
 	vs := make([]string, len(s))
@@ -58,4 +122,22 @@ func Copy(s []string) []string {
 		vs[i] = v
 	}
 	return vs
+}
+
+// Diff returns values that are present in one of the slices but not both
+func Diff(s []string, s2 []string) []string {
+	sm := setDiff(toSet(s), toSet(s2))
+	return fromSet(sm)
+}
+
+// DiffFold is like Diff, but case insensitive
+func DiffFold(s []string, s2 []string) []string {
+	sm := setDiff(toSetFold(s), toSetFold(s2))
+	return fromSet(sm)
+}
+
+// Intersect returns values that are present in both slices
+func Intersect(s []string, s2 []string) []string {
+	sm := setInter(toSet(s), toSet(s2))
+	return fromSet(sm)
 }

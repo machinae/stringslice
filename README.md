@@ -34,3 +34,9 @@ Returns true if the slice contains the given string
 
 ### Copy
 Creates a copy of the slice
+
+### Diff
+Returns values that are present in one of the slices but not both
+
+### Intersect
+Returns values that are present in both slices

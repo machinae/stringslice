@@ -1,6 +1,7 @@
 package stringslice
 
 import (
+	"sort"
 	"strings"
 	"testing"
 
@@ -38,7 +39,9 @@ var compactTests = []sliceTest{
 func TestUnique(t *testing.T) {
 	assert := assert.New(t)
 	for _, ts := range uniqueTests {
-		assert.EqualValues(ts.expected, Unique(ts.input))
+		vs := Unique(ts.input)
+		sort.Strings(vs)
+		assert.EqualValues(ts.expected, vs)
 	}
 }
 
@@ -72,10 +75,46 @@ func TestContains(t *testing.T) {
 	assert.False(Contains(s, "d"))
 }
 
+func TestContainsFold(t *testing.T) {
+	assert := assert.New(t)
+	s := []string{"a", "b", "c"}
+	assert.True(ContainsFold(s, "b"))
+	assert.True(ContainsFold(s, "B"))
+	assert.False(ContainsFold(s, "d"))
+	assert.False(ContainsFold(s, "D"))
+}
+
 func TestCopy(t *testing.T) {
 	assert := assert.New(t)
 	s := []string{"a", "b", "c"}
 	vs := Copy(s)
 	s[2] = "d"
 	assert.EqualValues([]string{"a", "b", "c"}, vs)
+}
+
+func TestDiff(t *testing.T) {
+	assert := assert.New(t)
+	s := []string{"a", "b", "c", "d"}
+	s2 := []string{"b", "c", "d", "e"}
+	vs := Diff(s, s2)
+	sort.Strings(vs)
+	assert.EqualValues([]string{"a", "e"}, vs)
+}
+
+func TestDiffFold(t *testing.T) {
+	assert := assert.New(t)
+	s := []string{"a", "B", "c", "d"}
+	s2 := []string{"b", "c", "D", "e"}
+	vs := DiffFold(s, s2)
+	sort.Strings(vs)
+	assert.EqualValues([]string{"a", "e"}, vs)
+}
+
+func TestIntersect(t *testing.T) {
+	assert := assert.New(t)
+	s := []string{"a", "b", "c", "d"}
+	s2 := []string{"b", "c", "d", "e"}
+	vs := Intersect(s, s2)
+	sort.Strings(vs)
+	assert.EqualValues([]string{"b", "c", "d"}, vs)
 }
