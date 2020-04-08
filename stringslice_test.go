@@ -118,3 +118,19 @@ func TestIntersect(t *testing.T) {
 	sort.Strings(vs)
 	assert.EqualValues([]string{"b", "c", "d"}, vs)
 }
+
+func TestUnion(t *testing.T) {
+	assert := assert.New(t)
+	s := []string{"a", "b", "c", "d"}
+	s2 := []string{"b", "c", "d", "e"}
+	vs := Union(s, s2)
+	sort.Strings(vs)
+	assert.EqualValues([]string{"a", "b", "c", "d", "e"}, vs)
+}
+
+func TestExclude(t *testing.T) {
+	assert := assert.New(t)
+	s := []string{"a", "b", "c", "d"}
+	vs := Exclude(s, "d", "b")
+	assert.EqualValues([]string{"a", "c"}, vs)
+}

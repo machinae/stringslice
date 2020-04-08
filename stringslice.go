@@ -141,3 +141,20 @@ func Intersect(s []string, s2 []string) []string {
 	sm := setInter(toSet(s), toSet(s2))
 	return fromSet(sm)
 }
+
+// Exclude returns a copy of the slice with values removed
+func Exclude(s []string, vs ...string) []string {
+	ss := toSet(vs)
+	return Filter(s, func(str string) bool {
+		return !ss[str]
+	})
+}
+
+// Union combines unique values in both slices
+func Union(s []string, s2 []string) []string {
+	ss := toSet(s)
+	for _, v := range s2 {
+		ss[v] = true
+	}
+	return fromSet(ss)
+}
